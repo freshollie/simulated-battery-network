@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "composite": true
+    },
+    "files": [],
+    "include": [],
+    "references": [
+      {
+        "path": "./services/predictions/tsconfig.json"
+      },
+      {
+        "path": "./services/battery/tsconfig.json"
+      },
+      {
+        "path": "./services/optimiser/tsconfig.json"
+      },
+      {
+        "path": "./services/market/tsconfig.json"
+      }
+    ]
+  }

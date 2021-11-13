@@ -1,3 +1,14 @@
 {
-  "name": "trader"
+  "name": "optimiser",
+  "dependencies": {
+    "date-fns": "^2.25.0",
+    "got": "^10.7.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.4.0"
+  },
+  "scripts": {
+    "start": "ts-node -T src/index.ts"
+  }
 }

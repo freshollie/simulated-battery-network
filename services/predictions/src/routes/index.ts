@@ -4,18 +4,18 @@ import {getPredictions} from '../data';
 
 const route = router();
 
-route.get('/', async (request, response) => {
-  const at = request.query.at;
-  if (typeof at !== 'string') {
+route.get('/prices', async (request, response) => {
+  const from = request.query.from;
+  if (typeof from !== 'string') {
     return response.sendStatus(400);
   }
 
-  const atDate = new Date(at);
-  if (!isValid(atDate)) {
+  const fromDate = new Date(from);
+  if (!isValid(fromDate)) {
     return response.sendStatus(400);
   }
 
-  const predictions = await getPredictions(atDate);
+  const predictions = await getPredictions(fromDate);
 
   if (!predictions) {
     return response.sendStatus(404);

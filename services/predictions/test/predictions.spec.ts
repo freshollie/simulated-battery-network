@@ -4,14 +4,15 @@ import app from '../src/app';
 const server = supertest(app);
 
 describe('Predictions api', () => {
-  it('should return the predictions for the given time', async () => {
-    const response = await server
-      .get('/')
-      .query({at: new Date('2021-10-04T01:00:00').toISOString()});
+  describe('/prices', () => {
+    it('should return the predictions for the given time', async () => {
+      const response = await server
+        .get('/prices')
+        .query({from: new Date('2021-10-04T01:00:00').toISOString()});
 
-    expect(response.error).toBeFalsy();
+      expect(response.error).toBeFalsy();
 
-    expect(response.body).toMatchInlineSnapshot(`
+      expect(response.body).toMatchInlineSnapshot(`
       Object {
         "2021-10-04T00:30:00.000Z": Object {
           "bid": 39.3535313160044,
@@ -207,5 +208,6 @@ describe('Predictions api', () => {
         },
       }
     `);
+    });
   });
 });

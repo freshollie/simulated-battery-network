@@ -9,9 +9,9 @@ type Prediction = {
 
 // Assuming we are getting these values from a DB, hence promise
 export const getPredictions = async (
-  at: Date,
+  from: Date,
 ): Promise<Record<string, Prediction> | undefined> => {
-  const interval = roundToNearestMinutes(at, 30);
+  const interval = roundToNearestMinutes(from, 30);
 
   const [bids, offers] = await Promise.all([
     bidPredictions(interval),
@@ -34,7 +34,6 @@ const keyFormat = "yyyy-MM-dd'T'HH:mm:ss";
 
 const bidPredictions = async (interval: Date) => {
   const key = format(interval, keyFormat);
-  console.log(key);
   const bids: Record<string, number> | undefined =
     bidPrices[key as keyof typeof bidPrices];
 
