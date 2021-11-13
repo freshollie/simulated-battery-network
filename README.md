@@ -45,7 +45,7 @@ Linting is done with `xo`
 yarn xo
 ```
 
-## Decisions
+## Rational
 
 ### Language
 

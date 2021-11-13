@@ -3,7 +3,6 @@ import config from '../config';
 
 export type Throughput = {exportMwh: number; importMwh: number};
 
-console.log(config.batteryApi);
 const batteryService = got.extend({prefixUrl: config.batteryApi});
 
 export const getThroughputBetween = async (

@@ -28,7 +28,7 @@ const simulate = async (simulationStartDate: Date, days: number) => {
     }
 
     // eslint-disable-next-line no-await-in-loop
-    await sleep(100);
+    await sleep(1);
   }
 };
 
