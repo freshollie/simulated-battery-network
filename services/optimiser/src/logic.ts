@@ -66,7 +66,7 @@ export const step = async (simStart: Date, time: Date) => {
     nextCharge > 0
       ? {
           volume: nextCharge,
-          price: nextPeriodPrices.offer,
+          price: nextPeriodPrices.bid,
         }
       : {
           volume: 0,
@@ -157,7 +157,9 @@ const calcObglibatedThroughput = (
  *
  * Use the current period, and the simulated prices
  * to work out if the period we are about to bid on
- * is best to buy or sell.
+ * is best to buy or sell. This algorithm is optimised
+ * for price fluctuations, and is very reactive. It
+ * doesn't do any forward planning.
  *
  * As the state of charge approaches the limits, we
  * asymptotically decrease our changes to prevent
@@ -197,10 +199,13 @@ const calculateDesiredVolumeChangeForPeriod = (
   const maxOffer = Math.max(...offerPrices);
   const minOffer = Math.min(...offerPrices);
 
+  // Buy factor increases when the price to buy is at the lowerest
+  // And we have lots of throughput left to use
   const buyFactor =
-    ((nextPrices.bid - minCost) / (maxCost - minCost)) *
+    ((maxCost - nextPrices.bid) / (maxCost - minCost)) *
     ((MAX_DAILY_THROUGHPUT - obligatedDayThroughputUpToPeriod.importMwh) /
       MAX_DAILY_THROUGHPUT);
+  // Sell factor increases when the price is at the highest
   const sellFactor =
     ((nextPrices.offer - minOffer) / (maxOffer - minOffer)) *
     ((MAX_DAILY_THROUGHPUT - obligatedDayThroughputUpToPeriod.exportMwh) /
@@ -217,6 +222,7 @@ const calculateDesiredVolumeChangeForPeriod = (
     sellFactor,
   });
 
+  // Decide what to do based on which factor right now has the most potential
   const factor = buyFactor - sellFactor;
 
   if (factor > 0) {
