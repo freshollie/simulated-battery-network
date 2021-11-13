@@ -2,11 +2,17 @@
   "name": "trading-network",
   "packageManager": "yarn@3.1.0",
   "workspaces": [
-    "services"
+    "services/*"
   ],
   "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.7",
     "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
     "typescript": "^4.4.4",
     "xo": "^0.46.4"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }

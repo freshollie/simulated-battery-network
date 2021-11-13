@@ -1,0 +1,8 @@
+{
+  "prettier": true,
+  "space": true,
+  "rules": {
+    "unicorn/prefer-module": "off",
+    "unicorn/prefer-node-protocol": "off"
+  }
+}

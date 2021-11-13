@@ -15,8 +15,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "composite": true,
-    "types": []
+    "composite": true
   },
   "exclude": ["/node_modules/", "/dist/"]
 }
