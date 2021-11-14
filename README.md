@@ -125,6 +125,15 @@ It does this by creating git-tags after deployment, which it then uses as refere
 services have changed. If we are using shared code within the repo, lerna can track those shared source dependencies
 and if the shared code changes all services which are using the shared code are deployed.
 
+### Building images
+
+The dependency manager in this repo (`yarn`), keeps a cache of dependencies in the `.yarn` folder, which means that
+if we install the dependencies in CI first, then docker doesn't need to redownload the dependencies whilst
+building the image (as they are copied in).
+
+Same could be done with the build artifacts (`yarn build` output). If these were built in CI before building the docker
+images, each image build wouldn't need to do much processing during build.
+
 ### Databases
 
 As stated [in some of the source code](services/optimiser/src/db/obligations.ts), this sort of work would be ideal
