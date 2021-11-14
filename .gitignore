@@ -8,3 +8,4 @@
 #/.pnp.*
 node_modules/
 dist/
+docker-compose-sim-output

@@ -9,6 +9,9 @@ services:
       PREDICTIONS_API: "http://predictions:3000"
       BATTERY_API: "http://battery:4000"
       MARKET_API: "http://market:5000"
+      ANALYSIS_WINDOW_HOURS: 6
+    volumes:
+      - ./docker-compose-sim-output/:/trading-network/services/optimiser/output
     depends_on:
       - battery
       - predictions

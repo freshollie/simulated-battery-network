@@ -6,7 +6,7 @@ export default winston.createLogger({
   transports: [
     new winston.transports.File({
       level: 'info',
-      filename: 'output.log',
+      filename: 'output/output.log',
       options: {flags: 'w'},
     }),
     new winston.transports.Console({

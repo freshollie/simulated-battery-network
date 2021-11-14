@@ -12,6 +12,8 @@
 docker-compose up
 ```
 
+The results of the simulation are output to `docker-compose-sim-output/output.log`
+
 ## Running outside of docker
 
 Install deps

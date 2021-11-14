@@ -5,6 +5,7 @@ import * as predictions from './api/predictions';
 import logger from './logger';
 
 import * as obligationsDb from './db/obligations';
+import config from './config';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const MAX_CHARGE = 10;
@@ -195,7 +196,7 @@ const calculateDesiredVolumeChangeForPeriod = (
   //
   // If we set this to 12, we'll use less cycles of the battery, but
   // sell and buy at the best periods
-  const forwardPlanningPeriod = addHours(period, 6);
+  const forwardPlanningPeriod = addHours(period, config.analysisWindow);
   const todaysPredictions = Object.entries(predictions)
     .filter(([time]) => isBefore(new Date(time), forwardPlanningPeriod))
     .map(([, prediction]) => prediction);
