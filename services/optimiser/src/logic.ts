@@ -99,11 +99,9 @@ export const step = async (simStart: Date, time: Date) => {
     time,
     currentSoc: batterySoc,
     nextPeriodPrices,
-    // This may not need to be in the output. Was not obvious from the docs
-    // predictedPrices,
+    predictedPrices,
     throughputToday,
     throughputAllTime,
-    nextCharge,
     offer,
     bid,
     offerResult: {...offer, successful: succesfulSubmission},
