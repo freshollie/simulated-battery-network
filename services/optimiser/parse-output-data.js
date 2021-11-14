@@ -14,9 +14,7 @@ fs.writeFileSync(
   data
     .map(
       (row) =>
-        `${row.currentSoc},${row.bid.price > 0 ? row.bid.price : ''}, ${
-          row.offer.price < 999 ? row.offer.price : ''
-        },${row.time}`,
+        `${row.currentSoc},${row.prices.offer},${row.prices.bid},${row.time}`,
     )
     .join('\n'),
 );

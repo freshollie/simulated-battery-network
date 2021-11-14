@@ -1,4 +1,4 @@
-import {addHours, endOfDay, isBefore, startOfDay} from 'date-fns';
+import {addHours, isBefore, startOfDay} from 'date-fns';
 import * as battery from './api/battery';
 import * as market from './api/market';
 import * as predictions from './api/predictions';
@@ -95,7 +95,9 @@ export const step = async (simStart: Date, time: Date) => {
   logger.info('Step', {
     time,
     currentSoc: batterySoc,
-    predictedPrices,
+    nextPeriodPrices,
+    // This may not need to be in the output. Was not obvious from the docs
+    // predictedPrices,
     throughputToday,
     throughputAllTime,
     nextCharge,
@@ -159,7 +161,7 @@ const calcObglibatedThroughput = (
  * to work out if the period we are about to bid on
  * is best to buy or sell. This algorithm is optimised
  * for price fluctuations, and is very reactive. It
- * doesn't do any forward planning.
+ * doesn't do any complex forward planning.
  *
  * As the state of charge approaches the limits, we
  * asymptotically decrease our changes to prevent
@@ -187,9 +189,14 @@ const calculateDesiredVolumeChangeForPeriod = (
   nextPrices: {offer: number; bid: number},
   obligatedDayThroughputUpToPeriod: battery.Throughput,
 ): number => {
-  const endOfCurrentDay = endOfDay(period);
+  // This algorithim can be tuned to be more or less volitile
+  // depending on the amount of forward planning
+  //
+  // If we set this to 12, we'll use less cycles of the battery, but
+  // sell and buy at the best periods
+  const forwardPlanningPeriod = addHours(period, 6);
   const todaysPredictions = Object.entries(predictions)
-    .filter(([time]) => isBefore(new Date(time), endOfCurrentDay))
+    .filter(([time]) => isBefore(new Date(time), forwardPlanningPeriod))
     .map(([, prediction]) => prediction);
 
   const bidPrices = todaysPredictions.map(({bid}) => bid);
