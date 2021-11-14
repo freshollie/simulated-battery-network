@@ -1,4 +1,4 @@
-import {addHours, isBefore, startOfDay} from 'date-fns';
+import {addHours, isBefore, startOfDay, isSameDay} from 'date-fns';
 import * as battery from './api/battery';
 import * as market from './api/market';
 import * as predictions from './api/predictions';
@@ -32,16 +32,18 @@ export const step = async (simStart: Date, time: Date) => {
   const nextPeriod = addHours(time, 1);
   const nextPeriodPrices = predictedPrices[nextPeriod.toISOString()]!;
 
-  const throughputForPeriodDay = await battery.getThroughputBetween(
+  const throughputOnDayOfNextPeriod = await battery.getThroughputBetween(
     startOfDay(nextPeriod),
     nextPeriod,
   );
 
-  const futureObligations = await obligationsDb.getNextObligations(time);
+  const futureObligations = await obligationsDb.getFutureObligations(time);
   const obligatedSoc = calcFutureBatteryState(batterySoc, futureObligations);
-  const obligatedThroughput = calcObglibatedThroughput(
-    throughputForPeriodDay,
-    futureObligations,
+  const obligatedThroughputOnDayOfPeriod = calcObglibatedThroughput(
+    throughputOnDayOfNextPeriod,
+    futureObligations.filter((obligation) =>
+      isSameDay(obligation.settlementPeriodStartDate, nextPeriod),
+    ),
   );
 
   const nextCharge = calculateDesiredVolumeChangeForPeriod(
@@ -49,7 +51,7 @@ export const step = async (simStart: Date, time: Date) => {
     obligatedSoc,
     predictedPrices,
     nextPeriodPrices,
-    obligatedThroughput,
+    obligatedThroughputOnDayOfPeriod,
   );
 
   const offer =
@@ -81,7 +83,8 @@ export const step = async (simStart: Date, time: Date) => {
   });
 
   if (succesfulSubmission) {
-    await obligationsDb.recordObligation(nextPeriod, {
+    await obligationsDb.recordObligation({
+      settlementPeriodStartDate: nextPeriod,
       type: nextCharge > 0 ? 'charge' : 'discharge',
       volume: Math.abs(nextCharge),
     });

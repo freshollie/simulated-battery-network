@@ -4,30 +4,35 @@
  **/
 
 // We are going to assume it's not possible for us to both charge and discharge in a given period
-export type Obligation = {type: 'charge' | 'discharge'; volume: number};
+export type Obligation = {
+  settlementPeriodStartDate: Date;
+  type: 'charge' | 'discharge';
+  volume: number;
+};
 
-const obligations: Array<{period: Date; obligation: Obligation | undefined}> =
-  [];
+const obligations: Obligation[] = [];
 
 export const recordObligation = async (
-  settlementPeriodStartDate: Date,
   obligation: Obligation,
 ): Promise<void> => {
-  obligations.push({period: settlementPeriodStartDate, obligation});
+  obligations.push(obligation);
 };
 
 export const getObligation = async (
   settlementPeriodStartDate: Date,
 ): Promise<Obligation | undefined> => {
   return obligations.find(
-    ({period}) => period.getTime() === settlementPeriodStartDate.getTime(),
-  )?.obligation;
+    (obligation) =>
+      obligation.settlementPeriodStartDate.getTime() ===
+      settlementPeriodStartDate.getTime(),
+  );
 };
 
-export const getNextObligations = async (from: Date): Promise<Obligation[]> => {
-  return obligations
-    .filter(
-      ({period, obligation}) => obligation && period.getTime() > from.getTime(),
-    )
-    .map(({obligation}) => obligation) as Obligation[];
+export const getFutureObligations = async (
+  from: Date,
+): Promise<Obligation[]> => {
+  return obligations.filter(
+    (obligation) =>
+      obligation.settlementPeriodStartDate.getTime() > from.getTime(),
+  );
 };

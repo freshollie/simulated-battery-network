@@ -53,25 +53,36 @@ In order to keep things simple and predictable, I used an algorithm which looks 
 and decides if the current price is best to sell or buy. It does this by creating a sell and buy factor, based on the battery SOC, the
 amount of cycles left for the day, the current price compared to highest and lowest in the foward planning period.
 
-Overall, it works out pretty well, and visualising the output data on graphs shows how the buy and sell prices (yellow and red lines)
-relfect the battery SOC when configured with different forward planning periods.
+Overall, it works out pretty well, and visualising the output data on graphs shows how the buy and sell prices of the period we are about to bid on
+(yellow and red lines) reflect the battery SOC when configured with different forward planning periods.
 
-#### 12 hours
+The lower the forward planning period, the higher the utilisation of the battery asset
+
+- ~115Mwh import and export for 3 hour
+- ~65Mwh import and export for 24 hour
+
+#### 24 hour analysis window
+
+<p align="center">
+  <img src="./media/graphs/24-hours.png">
+</p>
+
+#### 12 hour analysis window
 
 <p align="center">
   <img src="./media/graphs/12-hours.png">
 </p>
 
-#### 6 hours
+#### 6 hour analysis window
 
 <p align="center">
   <img src="./media/graphs/6-hours.png">
 </p>
 
-#### 2 hours
+#### 3 hour analysis window
 
 <p align="center">
-  <img src="./media/graphs/2-hours.png">
+  <img src="./media/graphs/3-hours.png">
 </p>
 
 ### Language
