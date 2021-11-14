@@ -26,6 +26,12 @@ Run simulation
 yarn start
 ```
 
+Each service can be run independently, for example
+
+```
+yarn workspace battery start
+```
+
 The simulation output is written to `services/optimiser/output.log`
 
 **NOTE**: The datetimes written to the log are in ISO UTC, not local time.
