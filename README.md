@@ -1,4 +1,4 @@
-# trading-network
+# simuated-battery-network
 
 ## Requirements
 
